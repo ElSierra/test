@@ -1,0 +1,4 @@
+{
+  "appService.defaultWebAppToDeploy": "/subscriptions/28c5e011-9503-4d05-919d-ce99650f99b3/AppServices/subscriptions/28c5e011-9503-4d05-919d-ce99650f99b3/resourceGroups/hojoisaac/providers/Microsoft.Web/sites/ioiblog",
+  "appService.deploySubpath": "."
+}
