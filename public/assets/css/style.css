@@ -572,3 +572,16 @@ pre{border:1px solid #eee;font-size:1em;line-height:1.8;margin:15px 0;max-width:
 	0%{box-shadow:0 0 0 0px rgba(88,108,218,0.1);}
 	100%{box-shadow:0 0 0 20px rgba(0,0,0,0);}
 }
+@media (max-width: 990px) {
+	.ppic {
+		
+		height: 0px;
+		
+        margin : 0px
+	}
+	.logout {
+		display: none;
+	}
+	/* CSS that should be displayed if width is equal to or less than 800px goes here */
+  }
+ 
