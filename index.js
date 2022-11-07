@@ -6,9 +6,10 @@ const uuid = require("uuid");
 multer = require("multer");
 const cors = require("cors");
 const { upload } = require("./fileupload");
-
+var connect = require("connect");
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(process.env.CLIENT_ID);
+const path = require("path");
 
 //! Express Initialization
 const app = express();
@@ -55,6 +56,12 @@ const Blog = mongoose.model("Note", blogSchema);
 
 const Users = mongoose.model("User", userSchema);
 const Comments = mongoose.model("Comment", commentSchema);
+app.get("/", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public",  "index.html"));
+});
+app.get("/blogpost/:id", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "public",  "index.html"));
+});
 
 // simple route
 app.get("/api/", (req, res) => {
@@ -161,6 +168,7 @@ app.get("/api/comments/:comment", (req, res) => {
     !err ? res.send(found) : console.log(err);
   });
 });
+
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
