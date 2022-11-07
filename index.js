@@ -40,6 +40,7 @@ const blogSchema = {
   authorName: String,
   authorImg: String,
   timestamp: String,
+  authorGoogleId: String,
 };
 
 const commentSchema = {
@@ -58,6 +59,7 @@ const Comments = mongoose.model("Comment", commentSchema);
 // simple route
 app.get("/api/", (req, res) => {
   Blog.find((err, found) => {
+    found = found.reverse();
     !err ? res.send(found) : console.log(err);
   });
 });
@@ -73,14 +75,21 @@ app.get("/api/random", (req, res) => {
   });
 });
 
-
 const uploadImage = upload.single("file");
 app.post("/api/blogpost", (req, res) => {
   uploadImage(req, res, (err) => {
     if (!err) {
       const url = req.protocol + "://" + req.get("host");
-      const { env, title, content, date, authorName, authorImg, timestamp} =
-        req.body;
+      const {
+        env,
+        title,
+        content,
+        date,
+        authorName,
+        authorImg,
+        timestamp,
+        authorGoogleId,
+      } = req.body;
       console.log(req.body);
 
       const newCompose = new Blog({
@@ -90,8 +99,8 @@ app.post("/api/blogpost", (req, res) => {
         img: url + "/uploads/" + req.file.filename,
         authorName: authorName,
         authorImg: authorImg,
+        authorGoogleId: authorGoogleId,
         timestamp: timestamp,
-     
       });
 
       // console.log('Adding notes:::::', note);
@@ -115,6 +124,17 @@ app.post("/api/blogpost", (req, res) => {
     }
   });
 });
+app.get("/api/singlepost/:id", (req, res) => {
+  Blog.findOne({ _id: req.params.id }, (err, found) => {
+    !err ? res.send(found) : console.log(err);
+  });
+});
+app.get("/api/authorpost/:googleid", (req, res) => {
+  Blog.find({ authorGoogleId: req.params.googleid }, (err, found) => {
+    !err ? res.send(found) : console.log(err);
+  });
+});
+
 app.post("/api/comments", (req, res) => {
   console.log(req.body);
   const comment = Comments({
@@ -123,7 +143,6 @@ app.post("/api/comments", (req, res) => {
     comment: req.body.comment,
     id: req.body.id,
     date: req.body.date,
-    
   });
   if (req.body.env === process.env.TOKENFORBLOG) {
     comment.save((err) => {
